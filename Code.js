@@ -1,19 +1,20 @@
-const spreadsheetId = ""
 const testUrl = ""
 const productionUrl = ""
-const testing = true
+const testing = false
 const humanObj = [
-  { name: 'Joe', userName: 'JoeIsCool152', platform: 'xbl' },
-  { name: 'Sarah', userName: 'SarahIsCool192', platform: 'xbl' },
+  { userName: 'JoeGamerTag123', platform: 'xbl' },
+  { userName: 'SarahGamerTag123', platform: 'xbl' },
   ]
 
 //DO NOT EDIT ANYTHING BELOW THIS LINE
 
-const ss = SpreadsheetApp.openById(spreadsheetId);
-const matchesSheet = ss.getSheetByName("Matches")
-const idsSheet = ss.getSheetByName('Ids')
+const webhooks = {
+  test: testUrl,
+  production: productionUrl
+};
 
-
+const ss = SpreadsheetApp.getActive()
+const idsSheet = ss.getSheets()[0]
 
 function fetchMatches() {
   const baseUrl = `https://api.tracker.gg/api/v2/halo-infinite/standard/matches`
@@ -25,7 +26,7 @@ function fetchMatches() {
   }
   const currentMatchArray = []
   const randomNum = Math.floor(Math.random() * 1001);
-  const idArray = (idsSheet.getRange(2, 1, idsSheet.getLastRow(), 1).getValues()).map(m => m[0]);
+  const idArray = (idsSheet.getDataRange().getValues()).map(m => m[0]);
 
   for(const human of humanObj) {
     const matchesUrl = `${baseUrl}/${human.platform}/${human.userName}?type=mp$experience=ranked&playlist=edfef3ac-9cbe-4fa2-b949-8f29deafd483&random=${randomNum}`
@@ -77,17 +78,12 @@ function fetchMatches() {
             finalMessageData.push(messageRow)
           }
           const finalMessage = `🎮🎮🎮🎮🎮🎮🎮🎮🎮🎮🎮\nMode: ${modeName}\nOutcome: ${outcome}\nDate: ${timestamp}\n\n${finalMessageData.join("\n")}\n🎮🎮🎮🎮🎮🎮🎮🎮🎮🎮🎮`
-          sendMessage(finalMessage, testing ? test : production)
+          sendMessage(finalMessage, testing ? 'test' : 'production')
         }
       }
     }
   }
 }
-
-const webhooks = {
-  test: testUrl,
-  production: productionUrl
-};
 
 function sendMessage(message, channel) {
   if(webhooks.hasOwnProperty(channel))
