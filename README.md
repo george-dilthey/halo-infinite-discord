@@ -4,7 +4,7 @@ This is a simple app that will allow you to show basic Halo Infinite match stats
  
 ![](2021-12-05-17-29-24.png)
 
-## Installation
+## Installation Instructions
 1. First, create a new Google Sheet (https://sheets.google.com/).
 2. In that sheet, click on Extensions > AppScript.
 3. Once the AppsScript editor opens, copy and paste the entire Code.js in this repository and paste it into the editor. You can remove the myFuntion script that is placed by default.
